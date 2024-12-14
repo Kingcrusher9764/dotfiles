@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+HISTFILE=~/.bash_history
+
+command=$(cat $HISTFILE | fzf)
+
+$command

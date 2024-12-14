@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 start_tmux(){
-    tmux new-session -s $1 -c $2
+    if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+        tmux new-session -s $1 -c $2
+        exit 0
+    fi
 }
 
 new_session(){
-    tmux new-session -ds $1 -c $2
+    if ! tmux has-session -t=$selected_name 2> /dev/null; then
+        tmux new-session -ds $1 -c $2
+    fi
 }
 
 session_attach(){
@@ -15,22 +20,17 @@ switch_client(){
     tmux switch-client -t=$1
 }
 
-base_path="$HOME/web-dev"
+base_path="$HOME/web_dev"
 
 selected=$(find $base_path -maxdepth 1 -mindepth 1 -type d | fzf)
 selected_name=$(basename $selected | tr . _)
 tmux_running=$(pgrep tmux)
 
 # start if no tmux session is running
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    start_tmux $selected_name $selected
-    exit 0
-fi
+start_tmux $selected_name $selected
 
 # create the new session if is not present
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    new_session $selected_name $selected
-fi
+new_session $selected_name $selected
 
 # attach if outside the tmux else switch client
 if [[ -z $TMUX ]]; then

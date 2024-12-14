@@ -1,0 +1,27 @@
+- name: Developer Setup Configuration 
+  hosts: localhost
+  become: yes
+  pre_tasks:
+    - name: update and upgrade the packages in Ubuntu or Debian
+      tags: always
+      apt:
+        update_cache: yes
+        upgrade: "yes"
+      changed_when: False
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: update and upgrade the packages in Archlinux
+      tags: always
+      pacman:
+        update_cache: yes
+        upgrade: "yes"
+      changed_when: False
+      when: ansible_distribution == "Archlinux"
+
+  tasks:
+    # - name: Install zsh
+    #   apt:
+    #     name: zsh
+    #     state: present
+    #     update_cache: true
+
