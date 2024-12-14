@@ -4,4 +4,8 @@ HISTFILE=~/.bash_history
 
 command=$(cat $HISTFILE | fzf)
 
+echo "[INFO] Running command : $command" 
+
+echo "[OUTPUT]: "
+
 $command
