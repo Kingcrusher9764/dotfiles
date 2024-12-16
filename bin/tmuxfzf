@@ -26,6 +26,11 @@ selected=$(find $base_path -maxdepth 1 -mindepth 1 -type d | fzf)
 selected_name=$(basename $selected | tr . _)
 tmux_running=$(pgrep tmux)
 
+# check if the selected is empty or not
+if [[ -z "$selected" ]]; then
+    exit 0
+fi
+
 # start if no tmux session is running
 start_tmux $selected_name $selected
 
