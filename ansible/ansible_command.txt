@@ -1,0 +1,6 @@
+## to gather the facts about system
+ansible all -m gather_facts
+
+## to gather the distribution about system
+ansible all -m gather_facts | grep ansible_distribution
+
