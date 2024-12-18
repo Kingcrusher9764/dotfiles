@@ -12,13 +12,17 @@
     apt:
       name: tmux
       state: latest
-      update_cache: true
     when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
 
   - name: Install nodejs
     apt:
       name: nodejs
       state: latest
-      update_cache: true
+    when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
+
+  - name: Install python3
+    apt:
+      name: python3
+      state: latest
     when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
 
