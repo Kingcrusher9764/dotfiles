@@ -1,23 +1,46 @@
 - name: Developer Setup Configuration 
   hosts: localhost
   become: true
+  pre_tasks:
+
+    - name: Move the file to different path
+      tags: snap
+      ansible.builtin.command:
+        cmd: mv /etc/apt/preferences.d/nosnap.pref ~/Documents/nosnap.backup
+      when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
+
+    - name: Update the system ("Ubuntu", "Debian", "Linux Mint")
+      tags: snap
+      apt:
+        update_cache: yes # it is used to update the system
+      when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
+
+    - name: Install snap package manager ("Ubuntu", "Debian", "Linux Mint")
+      tags: snap
+      apt:
+        name:
+          - snapd
+        state: latest
+        update_cache: yes # it is used to update the system
+      when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
+
   tasks:
-    
+
+  - name: Install tmux, neovim and i3 # name of the task
+    tags: packages
+    community.general.snap:
+      name: # it is used to list the name of modules
+        - tmux
+        - nvim
+        - i3
+      state: present # it used to check whether the modules are latest or not
+    when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
+
   # - name: Update the system and Install tmux, nodejs and python3 # name of the task
-  #   apt:
+  #   package: # it uses the default package manager of the os
   #     name: # it is used to list the name of modules
   #       - tmux
   #       - nodejs
   #       - python3
   #     state: latest # it used to check whether the modules are latest or not
   #     update_cache: yes # it is used to update the system
-  #   when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
-
-  - name: Update the system and Install tmux, nodejs and python3 # name of the task
-    package: # it uses the default package manager of the os
-      name: # it is used to list the name of modules
-        - tmux
-        - nodejs
-        - python3
-      state: latest # it used to check whether the modules are latest or not
-      update_cache: yes # it is used to update the system
