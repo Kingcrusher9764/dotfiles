@@ -33,7 +33,7 @@
         - tmux
         - nvim
         - i3
-      state: present # it used to check whether the modules are latest or not
+      state: present # it used to check whether the modules is present or not
     when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
 
   # - name: Update the system and Install tmux, nodejs and python3 # name of the task

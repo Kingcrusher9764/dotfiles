@@ -20,7 +20,7 @@ switch_client(){
     tmux switch-client -t=$1
 }
 
-base_path="$HOME/web_dev"
+base_path="$HOME/web-dev"
 
 selected=$(find $base_path -maxdepth 1 -mindepth 1 -type d | fzf)
 selected_name=$(basename $selected | tr . _)
