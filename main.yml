@@ -3,29 +3,69 @@
   become: true
   pre_tasks:
 
-    - name: Move the file to different path
-      tags: snap
-      ansible.builtin.command:
-        cmd: mv /etc/apt/preferences.d/nosnap.pref ~/Documents/nosnap.backup
-      when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
-
-    - name: Update the system ("Ubuntu", "Debian", "Linux Mint")
-      tags: snap
-      apt:
-        update_cache: yes # it is used to update the system
-      when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
-
-    - name: Install snap package manager ("Ubuntu", "Debian", "Linux Mint")
-      tags: snap
-      apt:
-        name:
-          - snapd
-        state: latest
-        update_cache: yes # it is used to update the system
-      when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
-
+    # - name: Move the file to different path
+    #   tags: snap
+    #   ansible.builtin.command:
+    #     cmd: mv /etc/apt/preferences.d/nosnap.pref ~/Documents/nosnap.backup
+    #   when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
+    #
+    # - name: Update the system ("Ubuntu", "Debian", "Linux Mint")
+    #   tags: snap
+    #   apt:
+    #     update_cache: yes # it is used to update the system
+    #   when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"]
+    #
+    # - name: Install snap package manager ("Ubuntu", "Debian", "Linux Mint")
+    #   tags: snap
+    #   apt:
+    #     name:
+    #       - snapd
+    #     state: latest
+    #     update_cache: yes # it is used to update the system
+    #   when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
+    
   tasks:
 
+    - name: Install tmux, neovim and i3 ("Ubuntu", "Debian", "Linux Mint") # name of the task
+      tags: packages
+      apt:
+        name: # it is used to list the name of modules
+          - tmux
+          - neovim
+          - i3
+        state: latest # it used to check whether the modules are latest or not
+      when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
+
+    - name: Install tmux, neovim and i3 (Arch) # name of the task
+      tags: packages
+      pacman:
+        name: # it is used to list the name of modules
+          - tmux
+          - neovim
+          - i3
+        state: latest # it used to check whether the modules are latest or not
+      when: ansible_distribution in ["Arch"] # condition to run the task
+
+    # config file setup automation code
+    - name: Copy the tmux conf to the home
+      tags: config
+      copy:
+        src: ~/dotfiles/config/.tmux.conf # the file you want to copy
+        dest: ~/.tmux.conf # the destination of file along with new name
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Copy the nvim conf directory to the .config directory
+      tags: config
+      copy:
+        src: ~/dotfiles/config/nvim # the dir you want to copy
+        dest: ~/.config/nvim # the destination of dir along with new name
+        owner: root
+        group: root
+        mode: 0644
+
+<<<<<<< Updated upstream
   - name: Install tmux, neovim and i3 # name of the task
     tags: packages
     community.general.snap:
@@ -35,12 +75,23 @@
         - i3
       state: present # it used to check whether the modules is present or not
     when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
+=======
+    - name: Copy the i3 conf to the .config directory
+      tags: config
+      copy:
+        src: ~/dotfiles/config/i3/config # the file you want to copy
+        dest: ~/.config/i3/conf # the destination of file along with new name
+        owner: root
+        group: root
+        mode: 0644
+>>>>>>> Stashed changes
 
-  # - name: Update the system and Install tmux, nodejs and python3 # name of the task
-  #   package: # it uses the default package manager of the os
-  #     name: # it is used to list the name of modules
-  #       - tmux
-  #       - nodejs
-  #       - python3
-  #     state: latest # it used to check whether the modules are latest or not
-  #     update_cache: yes # it is used to update the system
+    # - name: Update the system and Install tmux, nodejs and python3 # name of the task
+    #   package: # it uses the default package manager of the os
+    #     name: # it is used to list the name of modules
+    #       - tmux
+    #       - nodejs
+    #       - python3
+    #     state: latest # it used to check whether the modules are latest or not
+    #     update_cache: yes # it is used to update the system
+    #
