@@ -65,17 +65,6 @@
         group: root
         mode: 0644
 
-<<<<<<< Updated upstream
-  - name: Install tmux, neovim and i3 # name of the task
-    tags: packages
-    community.general.snap:
-      name: # it is used to list the name of modules
-        - tmux
-        - nvim
-        - i3
-      state: present # it used to check whether the modules is present or not
-    when: ansible_distribution in ["Ubuntu", "Debian", "Linux Mint"] # condition to run the task
-=======
     - name: Copy the i3 conf to the .config directory
       tags: config
       copy:
@@ -84,7 +73,6 @@
         owner: root
         group: root
         mode: 0644
->>>>>>> Stashed changes
 
     # - name: Update the system and Install tmux, nodejs and python3 # name of the task
     #   package: # it uses the default package manager of the os
