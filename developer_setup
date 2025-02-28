@@ -9,8 +9,8 @@ DOTFILES="$HOME/dotfiles"
 
 # install ansible if not present 
 if ! [ -x "$(command -v ansible)" ]; then
-    sudo apt install ansible # for linux mint
-    # sudo pacman -S ansible --no-confirm  # for arch
+    # sudo apt install ansible # for linux mint
+    sudo pacman -S ansible # for arch
 fi
 
 # created the ssh keys if not present
@@ -30,13 +30,19 @@ cd "$HOME"
 
 # install git if not present
 if ! [ -x "$(command -v git)" ]; then
-    sudo apt install git # for linux mint
-    # sudo pacman -S git --no-confirm # for arch 
+    # sudo apt install git # for linux mint
+    sudo pacman -S git # for arch 
 fi
 
 # install the dotfiles if not present from my git hub
 if ! [[ -d "$DOTFILES" ]]; then
     git clone git@github.com:Kingcrusher9764/dotfiles.git
+fi
+
+# install fzf if not present
+if ! [ -x "$(command -v fzf)" ]; then
+    # sudo apt install fzf # for linux mint
+    sudo pacman -S fzf # for arch 
 fi
 
 cd "$DOTFILES"

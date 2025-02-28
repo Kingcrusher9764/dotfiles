@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+base_path="$(pwd)"
+
+echo $base_path
+read file_type
+
+selected=$(find $base_path -name $file_type | fzf)
+
+echo $selected_name
+

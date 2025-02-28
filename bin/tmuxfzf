@@ -23,7 +23,7 @@ switch_client(){
 base_path="$HOME/web-dev"
 
 selected=$(find $base_path -maxdepth 1 -mindepth 1 -type d | fzf)
-selected_name=$(basename $selected | tr . _)
+selected_name=$(basename $selected | tr . _) # used to replace . with _
 tmux_running=$(pgrep tmux)
 
 # check if the selected is empty or not

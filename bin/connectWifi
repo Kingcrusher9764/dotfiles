@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+nmcli device wifi list
+
+echo "Enter the SSID or BSSID of wifi from the above list:"
+read wifi_name
+
+echo "Enter password:"
+read wifi_password
+
+nmcli device wifi connect $wifi_name password $wifi_password
+
