@@ -1,0 +1,7 @@
+polybar
+picom
+i3
+rofi
+feh
+ghostty
+
