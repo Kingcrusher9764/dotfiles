@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+ssh_keys_path="$HOME/.ssh"
+
+echo "[INFO]: making sure that the ssh-agent is running"
+eval "$(ssh-agent -s)"
+
+echo "[INFO]: select ssh key path"
+selected_key=$(find $ssh_keys_path | fzf)
+
+echo $selected_key
+
+ssh-add $selected_key
