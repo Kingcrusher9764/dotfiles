@@ -1,13 +1,33 @@
 #!/usr/bin/env bash
 
+# gac: Git Add Credential
 ssh_keys_path="$HOME/.ssh"
 
-echo "[INFO]: making sure that the ssh-agent is running"
-eval "$(ssh-agent -s)"
+echo "[INFO]: Checking if ssh-agent is running..."
 
-echo "[INFO]: select ssh key path"
-selected_key=$(find $ssh_keys_path | fzf)
+# Start ssh-agent only if it's not already running
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    echo "[INFO]: Starting ssh-agent..."
+    eval "$(ssh-agent -s)" > "$HOME/.ssh/ssh-agent.env"
+    echo 'export SSH_AUTH_SOCK' >> "$HOME/.ssh/ssh-agent.env"
+    echo 'export SSH_AGENT_PID' >> "$HOME/.ssh/ssh-agent.env"
+else
+    echo "[INFO]: ssh-agent is already running."
+fi
 
-echo $selected_key
+# Source the agent environment if needed
+if [[ -f "$HOME/.ssh/ssh-agent.env" ]]; then
+    source "$HOME/.ssh/ssh-agent.env"
+fi
 
-ssh-add $selected_key
+echo "[INFO]: Select an SSH key using fzf..."
+selected_key=$(find $ssh_keys_path -type f | fzf)
+
+if [[ -z "$selected_key" ]]; then
+    echo "[WARN]: No key selected."
+    exit 1
+fi
+
+echo "[INFO]: Adding key: $selected_key"
+ssh-add "$selected_key" < /dev/null
+
