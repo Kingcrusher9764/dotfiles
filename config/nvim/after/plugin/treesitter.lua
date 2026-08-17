@@ -1,6 +1,6 @@
 -- setup the treesitter using the provide code in their github
 
-require'nvim-treesitter.configs'.setup {
+require'nvim-treesitter.config'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
   ensure_installed = { "go", "python", "typescript", "javascript", "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
 
