@@ -18,12 +18,25 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- init.lua:
     {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    'nvim-telescope/telescope.nvim',
       dependencies = { 'nvim-lua/plenary.nvim' }
     },
 
     { "rose-pine/neovim", name = "rose-pine" },
-    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+            require("nvim-treesitter").setup()
+
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = { "apex", "soql" },
+                callback = function()
+                    vim.treesitter.start()
+                end,
+            })
+        end,
+    },
     {"theprimeagen/harpoon", name = "harpoon"},
     {"mbbill/undotree", name = "undotree"},
     {"tpope/vim-fugitive", name = "fugitive"},
@@ -31,12 +44,9 @@ require("lazy").setup({
     {'neovim/nvim-lspconfig'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/nvim-cmp'},
-    {"williamboman/mason.nvim"},
-    {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig",
-    },
+    { "williamboman/mason.nvim" },
+    { "williamboman/mason-lspconfig.nvim" },
+    { "neovim/nvim-lspconfig" },
     {'brenoprata10/nvim-highlight-colors'},
     {
         "L3MON4D3/LuaSnip",
